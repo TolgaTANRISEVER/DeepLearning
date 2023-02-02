@@ -186,11 +186,29 @@ def logistic_regression(x_train, y_train, x_test, y_test, learning_rate ,  num_i
     return y_prediction_test , y_prediction_train,cost_list
 #%%
 y_prediction_test , y_prediction_train,cost_list=logistic_regression(x_train, y_train, x_test, y_test,learning_rate = 0.01, num_iterations = 2500)
+#%%
+x_train, x_test, y_train, y_test = x_train.T, x_test.T, y_train.T, y_test.T
+#%%deeplearning
 
 
-
-
-
+# Evaluating the ANN
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import cross_val_score
+from keras.models import Sequential # initialize neural network library
+from keras.layers import Dense # build our layers library
+def build_classifier():
+    classifier = Sequential() # initialize neural network
+    classifier.add(Dense(units = 9, kernel_initializer = 'uniform', activation = 'relu', input_dim = x_train.shape[1]))
+    classifier.add(Dense(units = 5, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+    classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+    return classifier
+classifier = KerasClassifier(build_fn = build_classifier, epochs = 100)
+accuracies = cross_val_score(estimator = classifier, X = x_train, y = y_train, cv = 3)
+mean = accuracies.mean()
+variance = accuracies.std()
+print("Accuracy mean: "+ str(mean))
+print("Accuracy variance: "+ str(variance))
 
 
 
