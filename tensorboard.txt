@@ -1,0 +1,16 @@
+	      =add  code =
+from tensorflow.keras.callbacks import TensorBoard
+file_name = 'my_saved_model_2'
+tensorboard = TensorBoard(log_dir="logs\\{}".format(file_name))
+# Fitting the RNN to the Training set
+regressor.fit(X_train, y_train, epochs = 5, batch_size = 10,callbacks=[tensorboard])
+
+
+	    =run anaconda prompt= 
+go to saved files use "cd" and run it 
+
+python -m tensorboard.main --logdir=logs/
+
+or
+
+python -m tensorboard.main --logdir=logs/ --port=6007
