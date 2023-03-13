@@ -1,0 +1,23 @@
+irst, a Sequential model is created with the line model = Sequential().
+
+The first layer in the model is defined with the Conv2D() function. Here, 32 filters are used with a filter size of 3x3. The input_shape specifies the shape of the input images.
+The ReLU activation function is added to the layer with the Activation() function. This is a mathematical operation that will be applied to the layer's output.
+The MaxPooling2D() function is used to reduce the data size by taking the maximum value.
+These operations are repeated in the 2nd and 3rd CNN layers.
+The Flatten() function converts the output data of the layers into one-dimensional vectors.
+The Dense layer, which contains 1024 neurons, is defined with the Dense() function.
+Dropout() is a technique used to prevent overfitting. In this example, the dropout rate is set to 0.5.
+The output layer is also defined with the Dense() function. The output layer contains the same number of neurons as the total number of classes. The softmax activation function is used to calculate class probabilities.
+The model is compiled with the compile() function. The loss function is categorical_crossentropy.
+
+The softmax activation function is used in the output layer for multi-class classification problems. This function compresses the output values from the output layer between 0 and 1 by normalizing class probabilities and scales them to have a total value of 1. This can be used to calculate class probabilities.
+The softmax function is required to calculate the loss function, "categorical cross-entropy", during training. It is also used to calculate the probability of a specific class in the model output.
+The mathematical formula for the softmax function is as follows:
+softmax(x_i) = e^(x_i) / (sum(e^(x_j)) for j = 1 to n)
+Here, x_i and x_j are the input values for the i-th and j-th classes respectively. n represents the total number of classes.
+In this formula, all input values are first exponentiated as e^x. Then, the sum of the resulting values is calculated, and each input value is normalized according to this sum. As a result, the probability of each class is calculated, and the sum of these probabilities is 1.
+
+Dense layer is a type of layer commonly used in neural network models. This layer connects all input units to each output unit and produces an output using weights for each connection.
+For example, in a neural network model, there is usually an input layer followed by one or more dense layers. Dense layers help the model understand higher-level features by processing features coming from the input layer and passing them on to the next layer.
+Each output unit of a dense layer represents a feature and is computed separately. Each output unit is connected to all input units and multiplied by weights. The result of this operation is the activation value in the output unit. Activation values are typically processed using a non-linear activation function (e.g. ReLU, sigmoid, tanh, etc.).
+The number and size of dense layers determine the complexity of the model. Larger models with more dense layers are able to learn more complex features, but may also be more prone to overfitting.

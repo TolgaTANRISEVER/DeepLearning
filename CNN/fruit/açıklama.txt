@@ -1,0 +1,36 @@
+İlk önce, model = Sequential() satırı ile bir Sequential modeli oluşturulur.
+
+Modeldeki ilk katman, Conv2D() fonksiyonuyla tanımlanır. Burada, 32 filtre kullanılmıştır ve filtre boyutu 3x3'tür. input_shape, girdi görüntülerinin şeklini belirtir.
+ReLU aktivasyon fonksiyonu, Activation() fonksiyonu ile eklenir. Bu, katmanın çıkışına uygulanacak bir matematiksel işlemdir.
+MaxPooling2D() fonksiyonu, maksimum değer alarak veri boyutunu küçültmek için kullanılır.
+Bu işlemler, 2. ve 3. CNN katmanlarında da tekrarlanır.
+Flatten() fonksiyonu, katmanların çıkış verilerini tek boyutlu vektörlere dönüştürür.
+Yoğun bağlantılı katman, Dense() fonksiyonuyla tanımlanır. Bu katmanda 1024 nöron bulunur.
+Dropout(), aşırı öğrenmeyi önlemek için kullanılan bir tekniktir. Bu örnekte, dropout oranı 0.5 olarak belirlenmiştir.
+Çıkış katmanı, yine Dense() fonksiyonu ile tanımlanır. Çıkış katmanında, toplam sınıf sayısı kadar nöron bulunur. Softmax aktivasyon fonksiyonu, sınıf olasılıklarını hesaplamak için kullanılır.
+Model derleme, compile() fonksiyonuyla yapılır. Kayıp fonksiyonu, categorical_crossentropy olarak
+
+softmax
+
+Softmax aktivasyon fonksiyonu, çok sınıflı sınıflandırma problemlerinde çıkış katmanında kullanılır. Bu fonksiyon, sınıf olasılıklarını normalize ederek çıkış katmanından çıkan değerleri 0 ile 1 arasına sıkıştırır ve toplam değerleri 1 olacak şekilde ölçeklendirir. Bu sayede, sınıfların olasılıklarını hesaplamak için kullanılabilir.
+Softmax fonksiyonu, eğitim sırasında kullanılan kayıp fonksiyonu olan "categorical cross-entropy"nin hesaplanması için gereklidir. Ayrıca, modelin çıkışında belirli bir sınıfın olasılığını hesaplamak için de kullanılır.
+Softmax fonksiyonunun matematiksel formülü aşağıdaki gibidir:
+softmax(x_i) = e^(x_i) / (sum(e^(x_j)) for j = 1 to n)
+Burada, x_i, x_j sırasıyla i. ve j. sınıflara ait girdi değerleridir. n, toplam sınıf sayısını ifade eder.
+Bu formülde, öncelikle tüm girdi değerleri e^x şeklinde üs alınır. Daha sonra, elde edilen değerlerin toplamı hesaplanır ve bu toplama göre her bir girdi değeri normalleştirilir. Sonuç olarak, her sınıfın olasılığı hesaplanır ve bu olasılıkların toplamı 1 olur.
+
+Dense layer (Yoğun katman), sinir ağı modellerinde sıklıkla kullanılan bir tür katmandır. Bu katman, tüm girdi birimlerini her çıktı birimine bağlar ve her bağlantı için ağırlıklar kullanarak bir çıktı üretir.
+Örneğin, bir sinir ağı modelinde, bir girdi katmanı ile başlayarak ardından bir veya daha fazla yoğun katman bulunur. Yoğun katmanlar, girdi katmanından gelen özellikleri işleyerek ve bir sonraki katmana aktararak, modelin daha yüksek seviyelerde özellikleri anlamasına yardımcı olur.
+Yoğun katmanların her bir çıktı birimi, özellikleri temsil eder ve ayrı ayrı hesaplanır. Her bir çıktı birimi, tüm girdi birimleri ile bağlantılıdır ve ağırlıklar ile çarpılır. Bu işlemin sonucu, çıktı birimlerindeki aktivasyon değerleridir. Aktivasyon değerleri, genellikle doğrusal olmayan bir aktivasyon fonksiyonu (örneğin ReLU, sigmoid, tanh vb.) kullanılarak işlenir.
+Yoğun katmanların sayısı ve boyutu, modelin karmaşıklığını belirler. Daha büyük ve daha derin yoğun katmanlar, modelin daha karmaşık özellikleri öğrenmesine yardımcı olur, ancak aynı zamanda aşırı öğrenmeye neden olabilir. Yoğun katmanların boyutu, veri setinin büyüklüğüne ve modelin amacına bağlı olarak seçilir.
+
+
+Hidden layer (Gizli katman), sinir ağı modellerinde girdi ve çıktı katmanları arasında kalan katmanlardır. Bu katmanlar, girdileri işleyerek ve modelin daha yüksek seviyelerde özellikleri anlamasına yardımcı olarak, modelin karmaşıklığını artırırlar.
+Her bir gizli katman, bir veya daha fazla yoğun katman içerebilir. Yoğun katmanlar, girdi katmanından gelen özellikleri işleyerek ve bir sonraki katmana aktararak, modelin daha yüksek seviyelerde özellikleri anlamasına yardımcı olurlar.
+Gizli katmanların sayısı ve boyutu, modelin karmaşıklığını belirler. Daha büyük ve daha derin gizli katmanlar, modelin daha karmaşık özellikleri öğrenmesine yardımcı olur, ancak aynı zamanda aşırı öğrenmeye neden olabilir. Aşırı öğrenme, modelin eğitim verilerine aşırı uyum sağlaması ve daha genelleştirilemeyen sonuçlar üretmesi anlamına gelir.
+Gizli katmanların sayısı ve boyutu, veri setinin büyüklüğüne ve modelin amacına bağlı olarak seçilir. Modelin karmaşıklığı arttıkça, daha fazla veri, daha fazla gizli katman veya daha büyük boyutlu gizli katmanlar kullanılması gerekebilir.
+
+Max Pooling, bir sinir ağı modelinin özellik haritasındaki boyutunu azaltmak ve özelliklerin örtüşmesini azaltmak için kullanılan bir işlemdir. Bu işlem, özellik haritasındaki her bir küçük bölgenin en büyük değerini alarak çalışır.
+Max Pooling, özellik haritasındaki her bir bölgeyi (örneğin 2x2 veya 3x3) aşırı örtüşmeleri azaltmak için küçültür. Her bölge için en büyük değer alınarak, önemli özelliklerin korunması ve gürültünün azaltılması sağlanır.
+Örneğin, bir 4x4 özellik haritasında max pooling işlemi uygulamak istediğimizi düşünelim ve 2x2 boyutunda bir pencere kullanalım. Bu durumda, her bir 2x2 bölgenin en büyük değeri alınarak 2x2 boyutunda bir özellik haritası oluşturulur. Bu sayede, özellik haritasının boyutu yarı yarıya azaltılır ve aynı zamanda özelliklerin örtüşmesi de azaltılmış olur.
+Max Pooling, sinir ağı modellerinde özellik haritalarının boyutunu azaltarak işlem yapma süresini azaltır ve aynı zamanda aşırı öğrenmeyi azaltır. Ayrıca, özellik haritasındaki gürültüyü azaltarak modelin daha iyi genelleştirme yapmasına da yardımcı olur
