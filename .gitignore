@@ -1,3 +1,36 @@
 *.png
 *.jpg
 *.v2
+CNN/Face_Recognition/Face_Recognition/Final Testing Images/.DS_Store
+CNN/Face_Recognition/Face_Recognition/Final Training Images/.DS_Store
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_6/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_braeburn_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_crimson_snow_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_golden_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_golden_2/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_golden_3/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_granny_smith_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_hit_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_pink_lady_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_red_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_red_2/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_red_3/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_red_delicios_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_red_yellow_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_rotten_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/cabbage_white_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/carrot_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/cucumber_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/cucumber_3/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/eggplant_violet_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/pear_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/pear_3/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/zucchini_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/zucchini_dark_1/info.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/Papers/readme.txt
+CNN/fruit/fruits-360-original-size/fruits-360-original-size/readme.md
+CNN/fruit/fruits-360_dataset/fruits-360/LICENSE
+CNN/fruit/fruits-360_dataset/fruits-360/papers/fruit_recognition_deep_learning.pdf
+CNN/fruit/fruits-360_dataset/fruits-360/readme.md
+CNN/mnist/mnist_data_set/mnist_test.csv
+CNN/mnist/mnist_data_set/mnist_train.csv
