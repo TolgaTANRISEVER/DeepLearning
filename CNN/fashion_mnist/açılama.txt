@@ -1,0 +1,13 @@
+LeakyReLU (Sızıntılı Doğrusal Birim) aktivasyon fonksiyonu, yapay sinir ağlarında kullanılan bir tür ReLU fonksiyonudur. ReLU (Doğrusal Olmayan Birim) fonksiyonu, girdinin sıfırdan küçükse sıfırı, sıfırdan büyükse girdiyi çıkış olarak verir. Ancak ReLU fonksiyonunun bir dezavantajı, girdi sıfırdan küçük olduğunda çıkış sıfır olur ve bu durum geriye doğru hesaplama yaparken gradientin sıfıra yaklaşması veya sıfır olması nedeniyle eğitimde problemlere yol açabilir.
+
+LeakyReLU, ReLU'nun bu dezavantajını düzeltmek için tasarlanmıştır. Sızıntılı Doğrusal Birim fonksiyonunda, eğer girdi sıfırdan küçükse bir "sızıntı" faktörü α ile çarpılır ve çıkış olarak verilir. Bu sızıntı faktörü, girdinin sıfırdan küçük olduğu durumlarda bir miktar sıfırdan farklı çıkış verir ve gradientin sıfıra yaklaşması engellenir.
+
+Sızıntılı Doğrusal Birim fonksiyonu matematiksel olarak şu şekilde ifade edilir:
+
+f(x) = max(αx, x)
+
+Burada, x girdi değerini, α sızıntı faktörünü, ve f(x) çıkış değerini temsil eder. α genellikle 0.01 veya 0.001 gibi küçük bir değer olarak belirlenir.
+
+Örneğin, bir LeakyReLU fonksiyonu ile girdi olarak -2 verildiğinde, çıkış f(-2) = αx = 0.01 * -2 = -0.02 olacaktır. Ancak, girdi olarak 2 verildiğinde, çıkış f(2) = x = 2 olacaktır.
+
+LeakyReLU, özellikle derin sinir ağları için iyi bir seçim olabilir çünkü gradientleri düzgün bir şekilde aktararak eğitimde daha iyi sonuçlar elde edebilir.

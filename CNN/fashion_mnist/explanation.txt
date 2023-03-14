@@ -1,0 +1,13 @@
+LeakyReLU (Leaky Rectified Linear Unit) activation function is a type of ReLU function used in artificial neural networks. The ReLU function outputs zero if the input is less than zero and outputs the input if it is greater than or equal to zero. However, the disadvantage of ReLU function is that when the input is less than zero, the output is zero, which can cause problems in training when the gradient approaches or becomes zero.
+
+LeakyReLU is designed to address this disadvantage of ReLU. In the LeakyReLU function, if the input is less than zero, a "leakage" factor α is multiplied by the input and then outputted. This leakage factor provides a non-zero output when the input is less than zero, preventing the gradient from approaching zero.
+
+The mathematical expression for the LeakyReLU function is:
+
+f(x) = max(αx, x)
+
+Here, x represents the input value, α represents the leakage factor, and f(x) represents the output value. α is typically set to a small value such as 0.01 or 0.001.
+
+For example, if a LeakyReLU function is given an input of -2, the output f(-2) = αx = 0.01 * -2 = -0.02. However, if the input is 2, the output f(2) = x = 2.
+
+LeakyReLU can be a good choice for deep neural networks, as it can transmit gradients properly and achieve better results in training.
