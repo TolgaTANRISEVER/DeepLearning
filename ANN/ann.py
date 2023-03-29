@@ -12,13 +12,14 @@ import matplotlib.pyplot as plt
 #%% load data set
 x_l = np.load('ann_data_set/Sign-language-digits-dataset/X.npy')
 Y_l = np.load('ann_data_set/Sign-language-digits-dataset/Y.npy')
-img_size = 64
-plt.subplot(1, 2, 1)
-plt.imshow(x_l[260].reshape(img_size, img_size))
-plt.axis('off')
-plt.subplot(1, 2, 2)
-plt.imshow(x_l[900].reshape(img_size, img_size))
-plt.axis('off')
+# img_size = 64
+# plt.subplot(1, 2, 1)
+# plt.imshow(x_l[260].reshape(img_size, img_size))
+# plt.axis('off')
+
+# plt.subplot(1, 2, 2)
+# plt.imshow(x_l[900].reshape(img_size, img_size))
+# plt.axis('off')
 
 
 #%% Join a sequence of arrays along an row axis.
@@ -58,9 +59,16 @@ def initialize_parameters_and_layer_sizes_NN(x_train, y_train):
                   "bias2": np.zeros((y_train.shape[0],1))}
     return parameters
 #%%sigmoid func
-def sigmoid(z):
+def sigmoid(z):# used to increase nonlinearity
     y_head = 1/(1+np.exp(-z))
     return y_head
+def tanh(z):
+    return np.tanh(z)
+def relu(x):
+    return np.maximum(0, x)
+def softmax(x):
+    return(np.exp(x)/np.exp(x).sum())
+
 
 #%%forward propagation
 def forward_propagation_NN(x_train, parameters):
@@ -91,16 +99,16 @@ def backward_propagation_NN(parameters, cache, X, Y):
     db2 = np.sum(dZ2,axis =1,keepdims=True)/X.shape[1]
     dZ1 = np.dot(parameters["weight2"].T,dZ2)*(1 - np.power(cache["A1"], 2))
     dW1 = np.dot(dZ1,X.T)/X.shape[1]
-    db1 = np.sum(dZ1,axis =1,keepdims=True)/X.shape[1]
+    db1 = np.sum(dZ1,axis =1,keepdims=True)/X.shape[1]#cost un w1 z1 e göre türevleri
     grads = {"dweight1": dW1,
              "dbias1": db1,
              "dweight2": dW2,
-             "dbias2": db2}
+             "dbias2": db2}# cost un bunlara göre olan türevlerini depoluyorum update metot da kullanıcam
     return grads
 
 #%% # update parameters
 def update_parameters_NN(parameters, grads, learning_rate = 0.01):
-    parameters = {"weight1": parameters["weight1"]-learning_rate*grads["dweight1"],
+    parameters = {"weight1": parameters["weight1"]-learning_rate*grads["dweight1"],#cost un w1  e göre olan türevini w1 den çıkarıyorum ne kadar büyürse okadar çabuk öğrenir
                   "bias1": parameters["bias1"]-learning_rate*grads["dbias1"],
                   "weight2": parameters["weight2"]-learning_rate*grads["dweight2"],
                   "bias2": parameters["bias2"]-learning_rate*grads["dbias2"]}
@@ -124,6 +132,7 @@ def predict_NN(parameters,x_test):
     return Y_prediction
 #%% 2 - Layer neural network
 def two_layer_neural_network(x_train, y_train,x_test,y_test, num_iterations):
+    
     cost_list = []
     index_list = []
     #initialize parameters and layer sizes
@@ -156,31 +165,31 @@ def two_layer_neural_network(x_train, y_train,x_test,y_test, num_iterations):
     # Print train/test Errors
     print("train accuracy: {} %".format(100 - np.mean(np.abs(y_prediction_train - y_train)) * 100))
     print("test accuracy: {} %".format(100 - np.mean(np.abs(y_prediction_test - y_test)) * 100))
-    return parameters
+    return parameters,cache,plt
 
-parameters = two_layer_neural_network(x_train, y_train,x_test,y_test, num_iterations=2500)
+parameters , cache ,plt= two_layer_neural_network(x_train, y_train,x_test,y_test, num_iterations=2500)
 #%% reshaping
-x_train, x_test, y_train, y_test = x_train.T, x_test.T, y_train.T, y_test.T
+# x_train, x_test, y_train, y_test = x_train.T, x_test.T, y_train.T, y_test.T
 #%% neural network with keras
 
 # Evaluating the ANN
-from keras.wrappers.scikit_learn import KerasClassifier
-from sklearn.model_selection import cross_val_score
-from keras.models import Sequential # initialize neural network library
-from keras.layers import Dense # build our layers library
-def build_classifier():
-    classifier = Sequential() # initialize neural network
-    classifier.add(Dense(units = 8, kernel_initializer = 'uniform', activation = 'relu', input_dim = x_train.shape[1]))
-    classifier.add(Dense(units = 4, kernel_initializer = 'uniform', activation = 'relu'))
-    classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
-    classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
-    return classifier
-classifier = KerasClassifier(build_fn = build_classifier, epochs = 200)
-accuracies = cross_val_score(estimator = classifier, X = x_train, y = y_train, cv = 3)
-mean = accuracies.mean()
-variance = accuracies.std()
-print("Accuracy mean: "+ str(mean))
-print("Accuracy variance: "+ str(variance))
+# from keras.wrappers.scikit_learn import KerasClassifier
+# from sklearn.model_selection import cross_val_score
+# from keras.models import Sequential # initialize neural network library
+# from keras.layers import Dense # build our layers library
+# def build_classifier():
+#     classifier = Sequential() # initialize neural network
+#     classifier.add(Dense(units = 8, kernel_initializer = 'uniform', activation = 'relu', input_dim = x_train.shape[1]))
+#     classifier.add(Dense(units = 4, kernel_initializer = 'uniform', activation = 'relu'))
+#     classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+#     classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+#     return classifier
+# classifier = KerasClassifier(build_fn = build_classifier, epochs = 200)
+# accuracies = cross_val_score(estimator = classifier, X = x_train, y = y_train, cv = 3)
+# mean = accuracies.mean()
+# variance = accuracies.std()
+# print("Accuracy mean: "+ str(mean))
+# print("Accuracy variance: "+ str(variance))
 #%% neural network with pytorch 
 
 #%% neural network with tensorflow
