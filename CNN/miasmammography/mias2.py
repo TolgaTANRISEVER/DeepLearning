@@ -1,15 +1,139 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Apr 13 14:20:04 2023
+Created on Sat May 13 12:16:50 2023
 
 @author: Tolga
-"""
 
-import numpy as np # linear algebra
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+"""
+import cv2
+import matplotlib.pyplot as plt 
+from skimage.color import rgb2gray
+from skimage import filters
+import numpy as np
+import cv2
+import scipy
+import pandas as pd
+import glob
+import os
+import numpy as np
+from skimage.feature import greycomatrix, greycoprops
+from skimage.io import imread
+import matplotlib.pyplot as plt
+#%%
+def show(img, title = 'Gray Image', rgb = False, fs = 12, dp = (10, 10)):
+    plt.rcParams.update({'font.size': fs})
+    plt.rcParams['figure.figsize'] = dp
+    if rgb:
+        plt.imshow(img[:,:,::-1])
+    else:
+        plt.imshow(img, cmap=plt.cm.gray)
+    plt.axis('off')
+    plt.title(f'{title}')
+    plt.show()
+#%%
+
+def get_masks_and_sizes_of_connected_components(img_mask):
+    """
+    Finds the connected components from the mask of the image
+    """
+    mask, num_labels = scipy.ndimage.label(img_mask)
+
+    mask_pixels_dict = {}
+    for i in range(num_labels+1):
+        this_mask = (mask == i)
+        if img_mask[this_mask][0] != 0:
+            # Exclude the 0-valued mask
+            mask_pixels_dict[i] = np.sum(this_mask)
+        
+    return mask, mask_pixels_dict
+
+def get_mask_of_largest_connected_component(img_mask):
+    """
+    Finds the largest connected component from the mask of the image
+    """
+    mask, mask_pixels_dict = get_masks_and_sizes_of_connected_components(img_mask)
+    largest_mask_index = pd.Series(mask_pixels_dict).idxmax()
+    largest_mask = mask == largest_mask_index
+    return largest_mask
+def histogram_equalization(image):
+    # Görüntüyü gri tonlamaya dönüştür
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    
+    # Histogram eşitleme uygula
+    equalized = cv2.equalizeHist(gray)
+    
+    return equalized
+#%%
+
+if not os.path.exists('image_processed2'):
+    os.makedirs('image_processed2')
+
+# İşleme fonksiyonu
+def process_image(img_path):
+    # Resmi yükle
+    img = cv2.imread(img_path)
+    # Eşikleme işlemi uygula
+    img_gray = rgb2gray(img)
+    threshold = filters.threshold_sauvola(img_gray)
+    binary = (img_gray > threshold) * 1
+    kernel = np.ones((5, 5), np.uint8)
+    binary = binary.astype('uint8')
+    binary = cv2.erode(binary, kernel, iterations=-2)
+
+    # En büyük bağlantılı bileşeni al
+    img_mask = get_mask_of_largest_connected_component(binary)
+
+    # Resmi kırp
+    farest_pixel = np.max(list(zip(*np.where(img_mask == 1))), axis=0)
+    nearest_pixel = np.min(list(zip(*np.where(img_mask == 1))), axis=0)
+    if (nearest_pixel[1] == 0):
+        cropped_img = img[:farest_pixel[0], :farest_pixel[1]]
+    else:
+        cropped_img = img[nearest_pixel[0]:, nearest_pixel[1]:farest_pixel[1]]
+
+   
+    equalized_image = histogram_equalization(cropped_img)
+    return equalized_image
+
+
+# Kaydetme fonksiyonu
+def save_image(img, img_path):
+    # Resmi pgm olarak kaydet
+    cv2.imwrite(img_path, img)
+
+
+# İşlenecek dosyaların bulunduğu klasör yolu
+input_folder = 'mias/all-mias/'
+
+# Kaydedilecek dosyaların bulunduğu klasör yolu
+output_folder = 'image_processed2'
+
+# Tüm dosyaları al
+files = os.listdir(input_folder)
+
+# Her dosya için işleme uygula ve kaydet
+for file in files:
+    # Dosya yolu oluştur
+    if file.endswith('.pgm'):
+        img_path = os.path.join(input_folder, file)
+
+        # Resmi işle
+        processed_img = process_image(img_path)
+
+        # Kaydet
+        output_path = os.path.join(output_folder, file.split('.')[0] + '.pgm')
+        save_image(processed_img, output_path)
+
+        print(f"{img_path} işlendi ve {output_path} kaydedildi.")
+
+
+
+
+
+#%%
 
 no_angles = 360
-url ='mias/all-mias/'
+url ='image_processed2/'
 def save_dictionary(path,data):
     print('saving catalog...')
     #open('u.item', encoding="utf-8")
@@ -24,8 +148,8 @@ os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 import torch
 from skimage.io import imread
 import matplotlib.pyplot as plt
-r = 'mdb069 F CIRC B 462 406 44'
-image = imread("mias/all-mias/mdb069.pgm")
+r = 'mdb015 G CIRC B 595 864 68'
+image = imread("image_processed2/mdb015.pgm")
 a = torch.from_numpy(image)
 plt.imshow(a)
 plt.scatter(516, 1000-447, s=93)
@@ -75,11 +199,12 @@ def read_lable():
                 for  angle in range(no_angles):
                     info[words[0]][angle] = 1
     return (info)
- #%%   
+
 from sklearn.model_selection import train_test_split
 import numpy as np
 lable_info=read_lable()
 image_info=read_image()
+
 #%%
 #print(image_info[1][0])
 ids=lable_info.keys()   #ids = acceptable labeled ids
@@ -101,8 +226,11 @@ x_train = np.reshape(x_train, (a, b, c, 1))  #1 for gray scale
 (a, b, c)=x_test.shape
 x_test = np.reshape(x_test, (a, b, c, 1))   #1 for gray scale
 # cancer_prediction_cnn(x_train, y_train, x_test, y_test)
- #%%   
- 
+#%%
+
+
+
+
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Conv2D, MaxPool2D, Flatten
 from keras import optimizers
@@ -133,17 +261,30 @@ model.add(Activation('sigmoid'))
 
 model.summary()
 
+
+
+
+
+
+
+
+
 #%%
+
 import os
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint,TensorBoard
 es = EarlyStopping(monitor='val_loss', mode='min', patience=5,restore_best_weights=True, verbose=1)
 #%%
 
+    
+
+#%%
+
 
 model.compile(optimizer='adam',loss='binary_crossentropy', metrics=['accuracy'])
 
-file_name = 'my_saved_model_3'
+file_name = 'mias_processed2'
 tensorboard = TensorBoard(log_dir="logs\\{}".format(file_name))
 
 history = model.fit(x_train, y_train,validation_split=0.2, epochs=60, batch_size=128,callbacks=[es,tensorboard])
@@ -156,7 +297,8 @@ print('test_accuracy = ' + str(accuracy))
 #model.save('breast_cance_model.h5')
 
 save_dictionary('history1.dat', history.history)
-model.save_weights('model2.h5')
+model.save_weights('proced2mias.h5')
+
 
 #%% PLOTTING RESULTS (Train vs Validation)
 import matplotlib.pyplot as plt
@@ -222,3 +364,54 @@ import seaborn as sns
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test,y_pred)
 sns.heatmap(cm,annot=True,fmt="d")
+
+#%%
+
+img_mias = cv2.imread('mias/all-mias/mdb069.pgm')
+show(img_mias)
+img_gray_misas = rgb2gray(img_mias) 
+show(img_gray_misas)
+print(img_gray_misas.shape)
+from skimage.feature import greycomatrix, greycoprops
+img_gray_misas_uint = img_gray_misas.astype(np.uint8)
+# Verilen gri tonlamalı görüntü için GLCM hesapla
+glcm = greycomatrix(img_gray_misas_uint, distances=[1], angles=[0], symmetric=True, normed=True)
+
+# Kontrast özelliğini hesapla
+contrast = greycoprops(glcm, 'contrast')
+
+# Homojenlik özelliğini hesapla
+homogeneity = greycoprops(glcm, 'homogeneity')
+
+# Enerji özelliğini hesapla
+energy = greycoprops(glcm, 'energy')
+
+
+print("energy:",energy,"homogeneity:",homogeneity,"contrast:",contrast)
+#%%
+energy: [[1.]] homogeneity: [[1.]] contrast: [[0.]]
+energy: [[0.72501224]] homogeneity: [[0.99589207]] contrast: [[0.00821586]]
+#%%
+
+
+image = imread("image_processed2/mdb069.pgm")
+b = torch.from_numpy(image)
+plt.imshow(b)
+
+from skimage.feature import greycomatrix, greycoprops
+
+# Verilen gri tonlamalı görüntü için GLCM hesapla
+glcm = greycomatrix(b, distances=[1], angles=[0], symmetric=True, normed=True)
+
+# Kontrast özelliğini hesapla
+contrast = greycoprops(glcm, 'contrast')
+
+# Homojenlik özelliğini hesapla
+homogeneity = greycoprops(glcm, 'homogeneity')
+
+# Enerji özelliğini hesapla
+energy = greycoprops(glcm, 'energy')
+
+
+print("energy:",energy,"homogeneity:",homogeneity,"contrast:",contrast)
+

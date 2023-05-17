@@ -1,6 +1,9 @@
 *.png
 *.jpg
 *.v2
+CNN/miasmammography/mias
+CNN/miasmammography/image_processed
+CNN/miasmammography/image_processed2
 CNN/Face_Recognition/Face_Recognition/Final Testing Images/.DS_Store
 CNN/Face_Recognition/Face_Recognition/Final Training Images/.DS_Store
 CNN/fruit/fruits-360-original-size/fruits-360-original-size/Meta/apple_6/info.txt
@@ -34,3 +37,4 @@ CNN/fruit/fruits-360_dataset/fruits-360/papers/fruit_recognition_deep_learning.p
 CNN/fruit/fruits-360_dataset/fruits-360/readme.md
 CNN/mnist/mnist_data_set/mnist_test.csv
 CNN/mnist/mnist_data_set/mnist_train.csv
+Hebb,perceptron,Adaline - Kısayol.lnk

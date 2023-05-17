@@ -108,7 +108,7 @@ fashion_train = fashion_model.fit(train_X, train_label, batch_size=batch_size,
 #%%
 fashion_model.save_weights('fashion_tensorboar_1.h5')  # always save your weights after training or during training
 
-#%% evaluation 
+ #%% evaluation 
 print(fashion_train.history.keys())
 plt.plot(fashion_train.history["loss"],label = "Train Loss")
 plt.plot(fashion_train.history["val_loss"],label = "Validation Loss")
