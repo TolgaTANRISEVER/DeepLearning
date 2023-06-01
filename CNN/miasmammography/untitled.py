@@ -229,3 +229,109 @@ energy = greycoprops(glcm, 'energy')
 
 
 print("energy:",energy,"homogeneity:",homogeneity,"contrast:",contrast)
+
+
+#%%
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation, Conv2D, MaxPool2D, Flatten
+from keras import optimizers
+from keras import losses
+from sklearn import metrics
+
+rows, cols,color = x_train[0].shape
+model = Sequential()#create cnn model
+
+model.add(Conv2D(32, (3, 3), input_shape=(rows, cols, 1)))
+model.add(Activation('relu'))
+model.add(Conv2D(32, (3, 3)))
+model.add(Activation('relu'))
+model.add(Conv2D(64, (3, 3), padding='valid', strides=(1, 1)))
+model.add(Activation('relu'))
+model.add(Conv2D(64, (3, 3), padding='valid', strides=(1, 1),input_shape=(rows,cols,1)))
+model.add(Activation('relu'))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Conv2D(64, (3, 3), padding='valid', strides=(1, 1)))
+model.add(Activation('relu'))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Dropout(0.25))
+model.add(Flatten())
+model.add(Dense(1))
+model.add(Activation('sigmoid'))
+
+model.summary()
+#%%
+
+
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation, Conv2D, MaxPool2D, Flatten
+from keras import optimizers
+from keras import losses
+from sklearn import metrics
+
+rows, cols,color = x_train[0].shape
+model = Sequential()#create cnn model
+
+model.add(Conv2D(32, (3, 3), input_shape=(rows, cols, 1)))
+model.add(Activation('relu'))
+model.add(Conv2D(32, (3, 3)))
+model.add(Activation('relu'))
+model.add(Conv2D(128, (3, 3), padding='valid', strides=(1, 1)))
+model.add(Activation('relu'))
+model.add(Conv2D(128, (3, 3), padding='valid', strides=(1, 1),input_shape=(rows,cols,1)))
+model.add(Activation('relu'))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Conv2D(64, (3, 3), padding='valid', strides=(1, 1)))
+model.add(Activation('leaky_relu'))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Dropout(0.15))
+model.add(Flatten())
+model.add(Dense(1))
+model.add(Activation('tanh'))
+
+model.summary()
+
+#%%
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, Activation, Conv2D, MaxPool2D, Flatten
+from keras import optimizers
+from keras import losses
+from sklearn import metrics
+
+rows, cols,color = x_train[0].shape
+model = Sequential()#create cnn model
+
+model.add(Conv2D(64, (3, 3), input_shape=(rows, cols, 1)))
+model.add(Activation('relu'))
+model.add(Conv2D(64, (3, 3)))
+model.add(Activation('relu'))
+model.add(Conv2D(128, (3, 3), padding='valid', strides=(1, 1)))
+model.add(Activation('relu'))
+model.add(Conv2D(128, (3, 3), padding='valid', strides=(1, 1),input_shape=(rows,cols,1)))
+model.add(Activation('relu'))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Conv2D(64, (3, 3), padding='valid', strides=(1, 1)))
+model.add(Activation('relu'))
+model.add(MaxPool2D(pool_size=(2, 2)))
+
+model.add(Dropout(0.25))
+model.add(Flatten())
+model.add(Dense(1))
+model.add(Activation('sigmoid'))
+
+
+
+
+
+
+
+
+
+
+
+
+

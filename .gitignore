@@ -1,6 +1,7 @@
 *.png
 *.jpg
 *.v2
+*.dat
 CNN/miasmammography/mias
 CNN/miasmammography/image_processed
 CNN/miasmammography/image_processed2

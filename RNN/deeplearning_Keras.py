@@ -54,19 +54,7 @@ from keras.layers import Dropout
 from tensorflow import keras
 import tensorflow as tf
 
-# physical_devices = tf.config.list_physical_devices('GPU')
-# tf.config.experimental.set_memory_growth(physical_devices[0], True)
-gpus = tf.config.experimental.list_physical_devices('GPU')
-if gpus:
-  try:
-    # Currently, memory growth needs to be the same across GPUs
-    for gpu in gpus:
-      tf.config.experimental.set_memory_growth(gpu, True)
-    logical_gpus = tf.config.experimental.list_logical_devices('GPU')
-    print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
-  except RuntimeError as e:
-    # Memory growth must be set before GPUs have been initialized
-    print(e)
+
 
 # Initialising the RNN
 regressor = Sequential()
@@ -94,7 +82,7 @@ regressor.add(Dense(units = 1))
 regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
 #tensorboard
 from tensorflow.keras.callbacks import TensorBoard
-file_name = 'my_saved_model_2'
+file_name = 'my_saved_model_3'
 tensorboard = TensorBoard(log_dir="logs\\{}".format(file_name))
 # Fitting the RNN to the Training set
 regressor.fit(X_train, y_train, epochs = 5, batch_size = 10,callbacks=[tensorboard])

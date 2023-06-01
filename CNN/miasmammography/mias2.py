@@ -228,9 +228,6 @@ x_test = np.reshape(x_test, (a, b, c, 1))   #1 for gray scale
 # cancer_prediction_cnn(x_train, y_train, x_test, y_test)
 #%%
 
-
-
-
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Conv2D, MaxPool2D, Flatten
 from keras import optimizers
@@ -257,15 +254,9 @@ model.add(MaxPool2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 model.add(Flatten())
 model.add(Dense(1))
-model.add(Activation('sigmoid'))
+model.add(Activation('tanh'))
 
 model.summary()
-
-
-
-
-
-
 
 
 
@@ -284,7 +275,7 @@ es = EarlyStopping(monitor='val_loss', mode='min', patience=5,restore_best_weigh
 
 model.compile(optimizer='adam',loss='binary_crossentropy', metrics=['accuracy'])
 
-file_name = 'mias_processed2'
+file_name = 'mias_processed2_v4'
 tensorboard = TensorBoard(log_dir="logs\\{}".format(file_name))
 
 history = model.fit(x_train, y_train,validation_split=0.2, epochs=60, batch_size=128,callbacks=[es,tensorboard])
@@ -296,8 +287,8 @@ print('test_accuracy = ' + str(accuracy))
 #print(model.predict(x_test))
 #model.save('breast_cance_model.h5')
 
-save_dictionary('history1.dat', history.history)
-model.save_weights('proced2mias.h5')
+save_dictionary('history11.dat', history.history)
+model.save_weights('proced2_2mias.h5')
 
 
 #%% PLOTTING RESULTS (Train vs Validation)
@@ -389,8 +380,8 @@ energy = greycoprops(glcm, 'energy')
 
 print("energy:",energy,"homogeneity:",homogeneity,"contrast:",contrast)
 #%%
-energy: [[1.]] homogeneity: [[1.]] contrast: [[0.]]
-energy: [[0.72501224]] homogeneity: [[0.99589207]] contrast: [[0.00821586]]
+# energy: [[1.]] homogeneity: [[1.]] contrast: [[0.]]
+# energy: [[0.72501224]] homogeneity: [[0.99589207]] contrast: [[0.00821586]]
 #%%
 
 
